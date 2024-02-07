@@ -21,10 +21,21 @@ svg {
   fill: url(#myVerticalGradient);
   stroke: url(#myStrokeGradient);
   stroke-width: 10;
-  filter: blur(2px);
+  filter: blur(4px);
 }
 
 .shape {
-  fill: url(#myHorizontalGradient);
   stroke: none;
+  fill: url(#myHorizontalGradient);
+}
+
+#secondShapeBase{
+  fill: url(#secondShapePattern);
+}
+
+#secondShapePattern path {
+  fill: url(#myHorizontalGradientB);
+  stroke: url(#myStrokeGradient);
+  stroke-width: 3;
+  filter: blur(1px);
 }
