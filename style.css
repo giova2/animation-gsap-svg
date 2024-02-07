@@ -28,14 +28,3 @@ svg {
   stroke: none;
   fill: url(#myHorizontalGradient);
 }
-
-#secondShapeBase{
-  fill: url(#secondShapePattern);
-}
-
-#secondShapePattern path {
-  fill: url(#myHorizontalGradientB);
-  stroke: url(#myStrokeGradient);
-  stroke-width: 3;
-  filter: blur(1px);
-}
