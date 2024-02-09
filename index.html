@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GSAP and SVG animation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body> 
     <div class="container">
-      <svg height="500" width="500" > 
+      <svg viewBox="0 0 500 500" height="100%" width="100%" >
         <g id="groupT">  
           <use xlink:href="#animationT" overflow="visible"/>
         </g>
@@ -23,8 +22,10 @@
         
       </svg>
     </div>
+    
     <button id="play" style="position:absolute;top:0;left:0;z-index: 1;">Play</button>
-    <svg height="500" width="500" >
+    
+    <svg viewBox="0 0 500 500" height="100%" width="100%" >
       <defs>
         <g id="animationT" >
           <!-- transition circle         -->
@@ -186,8 +187,6 @@
 
     
     <script>
-      gsap.registerPlugin(CustomEase)
-
       transitionShapeID = "#transitionShape"
       firstShapeID = "#firstShape"
       secondShapeID = "#secondShape"
@@ -203,10 +202,9 @@
       firstShapeBaseID = "#firstShapeBase"
       transitionShapeBaseID = "#transitionShapeBase"
 
-      const INITIAL_STATE = { scale: 0, opacity: 1, transformOrigin: "50% 50%" }
-      const TRANSITION_IN = { duration: .5, scale: 1, ease:  "power4.out"}
-      const TRANSITION_SHAPE_IN = {...TRANSITION_IN}
-      const TRANSITION_OUT = { duration: .5, scale: 0, ease: "power4.in"}
+      const INITIAL_STATE = { scale: 0, opacity: 0.4, transformOrigin: "50% 50%" }
+      const TRANSITION_IN = { duration: .5, scale: 1, opacity: 1, ease:  "power1.inOut"}
+      const TRANSITION_OUT = { duration: .5, scale: 0, opacity: 0.5, ease: "power1.inOut"}
       const TRANSITION_SHAPE_OUT = { scale:0.05, duration: 0.5, ease: "linear" }
 
       gsap.set(sixthShapeID, INITIAL_STATE);
@@ -215,7 +213,7 @@
       gsap.set(thirdShapeID, INITIAL_STATE);
       gsap.set(secondShapeID, INITIAL_STATE);
       gsap.set(firstShapeID, INITIAL_STATE);
-      gsap.set(transitionShapeID, INITIAL_STATE);
+      gsap.set(transitionShapeID, {...INITIAL_STATE, opacity:1});
 
       gsap.set(sixthShapeBaseID, INITIAL_STATE);
       gsap.set(fifthShapeBaseID, INITIAL_STATE);
@@ -223,7 +221,7 @@
       gsap.set(thirdShapeBaseID, INITIAL_STATE);
       gsap.set(secondShapeBaseID, INITIAL_STATE);
       gsap.set(firstShapeBaseID, INITIAL_STATE);
-      gsap.set(transitionShapeBaseID, INITIAL_STATE);
+      gsap.set(transitionShapeBaseID, {...INITIAL_STATE, opacity:1});
       
       const transitionTargets = [transitionShape, transitionShapeBaseID]
       const firstShapeTargetsIDs = [firstShapeID, firstShapeBaseID]
@@ -234,27 +232,29 @@
       const sixthShapeTargetsIDs = [sixthShapeID, sixthShapeBaseID]
       const tl = gsap.timeline();
       
-      
+      const timeAhead = "-=0.3"
       tl.to(transitionTargets, TRANSITION_IN)
-      .to(firstShapeTargetsIDs, TRANSITION_IN)
+      .to(firstShapeTargetsIDs, TRANSITION_IN, timeAhead)
       .to(firstShapeTargetsIDs, TRANSITION_OUT)
       
-      .to(secondShapeTargetsIDs, TRANSITION_IN)
+      .to(secondShapeTargetsIDs, TRANSITION_IN, timeAhead)
       .to(secondShapeTargetsIDs, TRANSITION_OUT)
       
-      .to(thirdShapeTargetsIDs, TRANSITION_IN)
+      .to(thirdShapeTargetsIDs, TRANSITION_IN, timeAhead)
       .to(thirdShapeTargetsIDs, TRANSITION_OUT)
       
-      .to(fourthShapeTargetsIDs, TRANSITION_IN)
+      .to(fourthShapeTargetsIDs, TRANSITION_IN, timeAhead)
       .to(fourthShapeTargetsIDs, TRANSITION_OUT)
       
-      .to(fifthShapeTargetsIDs, TRANSITION_IN)
+      .to(fifthShapeTargetsIDs, TRANSITION_IN, timeAhead)
       .to(fifthShapeTargetsIDs, TRANSITION_OUT)
       
-      .to(sixthShapeTargetsIDs, TRANSITION_IN)
-      .to(sixthShapeTargetsIDs, TRANSITION_OUT)
+      .to(sixthShapeTargetsIDs, TRANSITION_IN, timeAhead)
+      .to(sixthShapeTargetsIDs, {...TRANSITION_OUT, opacity: 0.5})
       .to(transitionTargets, TRANSITION_SHAPE_OUT)
-      .to(transitionTargets, TRANSITION_OUT)
+      .to(transitionTargets, {...TRANSITION_OUT, onComplete: ()=>{
+        
+      }})
 
       document.getElementById("play").onclick = function(){
         tl.restart(true);
